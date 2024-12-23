@@ -72,6 +72,22 @@
             "name": "MainView.lay",
             "relType": 1,
             "path": "Source\\"
+          },
+          {
+            "type": 2,
+            "name": "writePage.cls",
+            "action": 5,
+            "relType": 1,
+            "path": "Source\\",
+            "comment": ""
+          },
+          {
+            "type": 3,
+            "name": "writePage.lay",
+            "action": 6,
+            "relType": 1,
+            "path": "Source\\",
+            "comment": ""
           }
         ]
       }
