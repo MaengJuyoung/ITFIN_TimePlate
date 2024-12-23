@@ -1,13 +1,13 @@
 <div data-base="AView" data-class="MainView" class="AView-Style" style="left: 0px; top: 0px; width: 100%; height: 100%; background-color: rgb(255, 255, 255); position: relative;" data-browser-width="1920" data-class-map="{&quot;afc&quot;:[&quot;AView&quot;,&quot;ALabel&quot;,&quot;ASelectBox&quot;,&quot;ATextField&quot;,&quot;AButton&quot;,&quot;AGrid&quot;]}" data-browser-height="1080">
-    <div data-base="AView" data-class="AView" class="AView-Style" style="width: 100%; height: 1080px; position: relative; left: 0px; top: 0px; background-color: rgb(255, 255, 255); margin: 0px auto; font-family: 맑은고딕;" id="MainView--wrap">
+    <div data-base="AView" data-class="AView" class="AView-Style" style="width: 100%; height: 1080px; position: relative; left: 0px; top: 0px; background-color: rgb(255, 255, 255); margin: 0px auto; font-family: 맑은고딕; min-width: 1340px;" id="MainView--wrap">
         <div data-base="AView" data-class="AView" class="AView-Style" style="width: 100%; height: auto; position: relative; left: 0px; top: 0px; background-color: rgba(0, 0, 0, 0);" id="MainView--header">
             <div data-base="AView" data-class="AView" class="AView-Style" style="width: 100%; height: auto; position: relative; left: 0px; top: 0px; padding-top: 70px; padding-bottom: 70px; padding-left: 20px; background-color: rgba(0, 0, 0, 0);" id="MainView--board">
-                <div data-base="AView" data-class="AView" class="AView-Style" style="width: 1600px; height: auto; position: relative; margin: 0px auto; background-color: rgba(0, 0, 0, 0);">
+                <div data-base="AView" data-class="AView" class="AView-Style" style="width: 1280px; height: auto; position: relative; margin: 0px auto; background-color: rgba(0, 0, 0, 0);">
                     <label data-base="ALabel" data-class="ALabel" class="ALabel-Style" style="width: auto; height: auto; position: relative; left: 0px; top: 0px; font-size: 50px; font-weight: bold; color: rgb(50, 110, 255);">게시판</label>
                 </div>
             </div>
             <div data-base="AView" data-class="AView" class="AView-Style" style="width: 100%; position: relative; border-top: 2px solid rgb(50, 110, 255); height: 90px; background-color: rgba(0, 0, 0, 0);" id="MainView--search">
-                <div data-base="AView" data-class="AView" class="AView-Style" style="width: 1600px; height: 90px; position: relative; padding: 20px 10px; height: 90px; background-color: rgba(0, 0, 0, 0); margin: 0px auto;">
+                <div data-base="AView" data-class="AView" class="AView-Style" style="width: 1280px; position: relative; padding: 20px 10px; height: 90px; background-color: rgba(0, 0, 0, 0); margin: 0px auto;">
                     <select data-base="ASelectBox" data-class="ASelectBox" class="ASelectBox-Style" style="width: 150px; height: 50px; position: relative; font-size: 20px; float: left; border-radius: 5px;" id="MainView--selectBox"></select>
                     <input data-base="ATextField" data-class="ATextField" type="text" value="" class="ATextField-Style" autocomplete="off" style="width: 300px; height: 50px; position: relative; margin-left: 10px; top: 0px; font-size: 20px; background-color: rgb(255, 255, 255); float: left; border-radius: 5px;" placeholder="검색어를 입력하세요" id="MainView--searchField">
                     <button data-base="AButton" data-class="AButton" class="AButton-Style" style="width: 150px; height: 50px; position: relative; left: 0px; top: 0px; margin-left: 10px; font-size: 20px; float: left; border-radius: 5px; background-color: rgb(50, 110, 255); color: rgb(255, 255, 255);">검색</button>
@@ -15,13 +15,13 @@
                 </div>
             </div>
         </div>
-        <div data-base="AView" data-class="AView" class="AView-Style" style="width: 1600px; height: 780px; position: relative; left: 0px; top: 0px; background-color: rgb(50, 110, 255); padding: 10px; margin: 0px auto; border-radius: 5px;" id="MainView--container">
+        <div data-base="AView" data-class="AView" class="AView-Style" style="width: 1280px; height: 780px; position: relative; left: 0px; top: 0px; background-color: rgb(50, 110, 255); padding: 10px; margin: 0px auto; border-radius: 5px;" id="MainView--container">
             <div data-base="AView" data-class="AView" class="AView-Style" style="width: 100%; height: 50px; position: relative; background-color: rgba(0, 0, 0, 0); margin-bottom: 10px;" id="MainView--write">
                 <button data-base="AButton" data-class="AButton" class="AButton-Style" style="width: 150px; height: 50px; position: relative; left: 0px; top: 0px; font-size: 20px; float: left; border-radius: 5px;" data-listener-click="MainView:onWriteBtnClick">글쓰기</button>
                 <label data-base="ALabel" data-class="ALabel" class="ALabel-Style" style="width: auto; height: 50px; position: relative; left: 0px; top: 0px; float: right; font-size: 20px; letter-spacing: -1px; line-height: 50px; color: rgb(255, 255, 255);">! 표시는 수정일자</label>
             </div>
-            <div data-base="AView" data-class="AView" class="AView-Style" style="width: 1580px; height: 700px; position: relative; left: 0px; top: 0px; background-color: rgb(255, 255, 255);" id="MainView--content">
-                <div data-base="AGrid" data-class="AGrid" data-selectable="true" data-clear-rowtmpl="true" class="AGrid-Style" style="width: 1580px; height: 100%; position: relative; left: 0px; top: 0px; visibility: visible; border-radius: 5px; margin-left: 0px; margin-top: 0px;" id="MainView--grid" data-fullrow-select="true">
+            <div data-base="AView" data-class="AView" class="AView-Style" style="width: 1260px; height: 700px; position: relative; left: 0px; top: 0px; background-color: rgb(255, 255, 255);" id="MainView--content">
+                <div data-base="AGrid" data-class="AGrid" data-selectable="true" data-clear-rowtmpl="true" class="AGrid-Style" style="width: 1260px; height: 100%; position: relative; left: 0px; top: 0px; visibility: visible; border-radius: 5px; margin-left: 0px; margin-top: 0px;" id="MainView--grid" data-fullrow-select="true">
                     <div class="grid-scroll-area" style="overflow-y: auto;">
                         <table class="grid-body-table" align="center">
                             <colgroup>
@@ -31,7 +31,7 @@
                                 <col width="20%">
                                 <col width="25%">
                             </colgroup>
-                            <thead align="center" class="head-prop" style="visibility: visible;">
+                            <thead align="center" class="head-prop" style="visibility: visible; display: table-header-group;">
                                 <tr height="60" style="background-color: rgba(50, 110, 255, 0.5);">
                                     <td style="font-size: 20px; border-color: rgba(50, 110, 255, 0.5); border-style: solid; border-width: 1px;">No.</td>
                                     <td style="font-size: 20px; border-color: rgba(50, 110, 255, 0.5); border-style: solid; border-width: 1px;">제목</td>
