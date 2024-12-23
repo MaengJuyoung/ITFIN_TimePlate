@@ -81,7 +81,6 @@ MainView.prototype.addGridHeadersToSelectBox = function()
 // 2. 글 목록을 그리드에 추가하는 함수
 MainView.prototype.loadPostsToGrid = function(data) {
 	console.log("data = ",data);
-    if (data && Array.isArray(data)) {  // 데이터가 배열인지 확인
         data.forEach((post) => {
             const rowData = [
                 post.id,
@@ -93,9 +92,6 @@ MainView.prototype.loadPostsToGrid = function(data) {
 
             this.grid.addRow(rowData);  // 그리드에 새로운 행을 추가
         });
-    } else {
-        console.warn('Invalid data received in loadPostsToGrid:', data);
-    }
 };
 
 // 글쓰기 버튼 클릭 - 글쓰기 창 OPEN
@@ -108,13 +104,15 @@ MainView.prototype.onWriteBtnClick = function(comp, info, e)
     //윈도우 오픈 viewUrl, parent, left, top, width, height 
     wnd.openAsDialog('Source/writePage.lay', this.getContainer()); 
 	
-	//윈도우가 Close 될때 자동 호출되는 메소드 
-    wnd.setResultCallback((result, data) => { 
-		console.log("data1 = ",data);
-       this.loadPostsToGrid([data]);
-    }); 
-	
+	// 윈도우를 닫을때 this의 onWindowResult  함수를 호출하도록 한다. 
+    wnd.setResultListener(this); 	
 };
 
-
+//onWindowResult 재정의  
+MainView.prototype.onWindowResult = function(result, data, awindow) 
+{ 
+    if(result){ 
+        this.loadPostsToGrid(result);
+    } 
+};  
 
