@@ -27,8 +27,6 @@ function MainView*onInitDone()
 
 	// 세션에서 기존 글 목록 가져오기
     let posts = JSON.parse(sessionStorage.getItem('posts')) || [];  
-    
-    // 그리드에 기존 글 목록 추가
     posts.forEach(post => {
         const rowData = [
                 post.id,
@@ -78,22 +76,6 @@ MainView.prototype.addGridHeadersToSelectBox = function()
 
 };
 
-// 2. 글 목록을 그리드에 추가하는 함수
-MainView.prototype.loadPostsToGrid = function(data) {
-	console.log("data = ",data);
-        data.forEach((post) => {
-            const rowData = [
-                post.id,
-                post.writer,
-                post.title,
-                post.content,
-                post.date
-            ];
-
-            this.grid.addRow(rowData);  // 그리드에 새로운 행을 추가
-        });
-};
-
 // 글쓰기 버튼 클릭 - 글쓰기 창 OPEN
 function MainView*onWriteBtnClick(comp, info, e)
 {
@@ -115,4 +97,15 @@ function MainView*onWindowResult(result, data, awindow)
         this.loadPostsToGrid(result);
     } 
 };  
+// 글 목록을 그리드에 추가하는 함수
+MainView.prototype.loadPostsToGrid = function(data) {
+	const rowData = [
+    	data.id,
+        data.writer,
+        data.title,
+        data.content,
+        data.date
+    ];
 
+    this.grid.addRow(rowData);  // 그리드에 새로운 행을 추가       
+};
