@@ -24,7 +24,6 @@ editPage.prototype.onInitDone = function()
 	// 전달된 데이터 가져오기
     this.data = this.getContainer().data;
 	const rowData = this.data;
-	console.log("data = ",rowData);
     if (!rowData) return;
 
     // 필드 초기화
