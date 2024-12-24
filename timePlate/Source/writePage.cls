@@ -6,6 +6,7 @@ Do not call Function in Constructor.
 class writePage()
 {
 	super();
+	this.data = null; 
 
 }
 extends AView;
@@ -88,7 +89,7 @@ function writePage*onSubmitBtnClick(comp, info, e)
     
     // 창 닫기
 	console.log("newPost = ",newPost);
-    this.getContainer().close(newPost); 
+    this.getContainer().close({ result: 'create', data: newPost }); 
 	
 };
 

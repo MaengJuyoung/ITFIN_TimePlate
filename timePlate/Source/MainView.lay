@@ -21,7 +21,7 @@
                 <label data-base="ALabel" data-class="ALabel" class="ALabel-Style" style="width: auto; height: 50px; position: relative; left: 0px; top: 0px; float: right; font-size: 20px; letter-spacing: -1px; line-height: 50px; color: rgb(255, 255, 255);">! 표시는 수정일자</label>
             </div>
             <div data-base="AView" data-class="AView" class="AView-Style" style="width: 1260px; height: 700px; position: relative; left: 0px; top: 0px; background-color: rgb(255, 255, 255);" id="MainView--content">
-                <div data-base="AGrid" data-class="AGrid" data-selectable="true" data-clear-rowtmpl="true" class="AGrid-Style" style="width: 1260px; height: 100%; position: relative; left: 0px; top: 0px; visibility: visible; border-radius: 5px; margin-left: 0px; margin-top: 0px;" id="MainView--grid" data-fullrow-select="true">
+                <div data-base="AGrid" data-class="AGrid" data-selectable="true" data-clear-rowtmpl="true" class="AGrid-Style" style="width: 1260px; height: 100%; position: relative; left: 0px; top: 0px; visibility: visible; border-radius: 5px; margin-left: 0px; margin-top: 0px;" id="MainView--grid" data-fullrow-select="true" data-listener-select="MainView:onGridSelect">
                     <div class="grid-scroll-area" style="overflow-y: auto;">
                         <table class="grid-body-table" align="center">
                             <colgroup>
