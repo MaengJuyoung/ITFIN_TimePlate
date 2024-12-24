@@ -24,7 +24,7 @@ function editPage*onInitDone()
 	// 전달된 데이터 가져오기
     this.data = this.getContainer().data;
 	const rowData = this.data;
-
+	console.log("data = ",rowData);
     if (!rowData) return;
 
     // 필드 초기화
@@ -34,9 +34,9 @@ function editPage*onInitDone()
     const alert = document.getElementById('editPage--alert');
     
 	// 기존 데이터 불러오기
-    this.writer.setText(rowData[1]); // 작성자는 라벨로 설정
-    this.title.setText(rowData[2]);
-    this.content.setText(rowData[3]);
+    this.writer.setText(rowData[3]); // 작성자는 라벨로 설정
+    this.title.setText(rowData[1]);
+    this.content.setText(rowData[2]);
 
 };
 

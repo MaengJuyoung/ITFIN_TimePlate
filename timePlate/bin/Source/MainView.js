@@ -67,7 +67,7 @@ MainView.prototype.addDataToGrid = function(data) {
 
 // 그리드 데이터 필터링 함수
 MainView.prototype.filterGridData = function(selectBoxItemIdex, searchText) {
-	if (!searchText) {
+	if (!searchText) { // 검색어를 입력하지 않으면 모든 데이터 보여주기
 		this.loadSessionDataToGrid();
 		return;
 	}
