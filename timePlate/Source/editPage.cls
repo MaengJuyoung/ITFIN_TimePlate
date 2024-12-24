@@ -51,12 +51,12 @@ function editPage*onActiveDone(isFirst)
 function editPage*onCloseBtnClick(comp, info, e)
 {
 
-	this.getContainer().close(); 
+	this.getContainer().close('close'); 
 
 };
 
 
-// 글쓰기 확인 버튼
+// 수정 버튼
 function editPage*onUpdateBtnClick(comp, info, e)
 {
     
@@ -67,51 +67,39 @@ function editPage*onUpdateBtnClick(comp, info, e)
                           String(currentDate.getDate()).padStart(2, '0') + ' ' +
                           String(currentDate.getHours()).padStart(2, '0') + ':' +
                           String(currentDate.getMinutes()).padStart(2, '0');
+  
     
-    let posts = JSON.parse(sessionStorage.getItem('posts')) || [];  // 기존 글 목록 불러오기 (없으면 빈 배열)
-    
-    // postId를 sessionStorage에서 가져오고 없으면 1로 초기화
-    var postId = 1;
-    
-    // 새로운 글 데이터 생성
+    // 기존 데이터에서 ID 가져오기
+    const postId = this.data[0];  // 기존의 포스트 ID
+
+    // 새로운 글 데이터 생성 (제목과 내용만 수정)
     const newPost = {
-        id: postId,
+        id: postId,  // 기존 ID 그대로 사용
         writer: this.writer.getText(),
         title: this.title.getText(),
         content: this.content.getText(),
         date: formattedDate
     };
 
-    // 새로운 글 데이터를 배열에 추가
-    posts.push(newPost);
-    
-    // 업데이트된 글 목록을 세션에 저장
-    sessionStorage.setItem(postId, JSON.stringify(posts));
+    // 수정된 데이터를 세션 스토리지에 저장
+    sessionStorage.setItem(`post${postId}`, JSON.stringify(newPost));
 	
     
     // 수정된 데이터를 전달하며 창을 닫음
-    this.getContainer().close({ result: 'edit', data: newPost });
-	postId++;
+    this.getContainer().close('edit');
 	
 };
+
+// 삭제 버튼
 function editPage*onDeleteBtnClick(comp, info, e)
 {
-	console.log(this.data);
-	
-	// sessionStorage에서 'posts' 데이터를 가져옴
-    let posts = JSON.parse(sessionStorage.getItem('posts')) || [];
 
     // 삭제할 포스트의 ID 가져오기 (this.data.id)
     const postIdToDelete = this.data[0];
-	console.log("postIdToDelete = ",postIdToDelete);
-
-    // 포스트 배열에서 해당 ID를 가진 항목을 제외한 새로운 배열로 업데이트
-    posts = posts.filter(post => post.id !== postIdToDelete);
-
-    // 업데이트된 배열을 다시 sessionStorage에 저장
-    sessionStorage.setItem('posts', JSON.stringify(posts));
+	
+	sessionStorage.removeItem(`post${postIdToDelete}`); // 해당 ID의 행을 세션에서 삭제
 	
 	// 삭제된 데이터를 전달하며 창을 닫음
-    this.getContainer().close({ result: 'delete', id: postIdToDelete });
+    this.getContainer().close('delete');
 
 };

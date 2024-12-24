@@ -36,7 +36,7 @@ writePage.prototype.onActiveDone = function(isFirst)
 writePage.prototype.onCloseBtnClick = function(comp, info, e)
 {
 
-	this.getContainer().close(); 
+	this.getContainer().close('close'); 
 
 };
 
@@ -64,32 +64,34 @@ writePage.prototype.onSubmitBtnClick = function(comp, info, e)
                           String(currentDate.getHours()).padStart(2, '0') + ':' +
                           String(currentDate.getMinutes()).padStart(2, '0');
     
-    let posts = JSON.parse(sessionStorage.getItem('posts')) || [];  // 기존 글 목록 불러오기 (없으면 빈 배열)
+    // 세션 스토리지에서 현재 존재하는 post 키 목록 확인
+    let maxPostId = 0;
+    for (let key in sessionStorage) {
+        if (key.startsWith('post')) {
+            const postId = parseInt(key.replace('post', ''), 10);
+            if (!isNaN(postId) && postId > maxPostId) {
+                maxPostId = postId; // 가장 큰 번호 찾기
+            }
+        }
+    }
     
-    // postId를 sessionStorage에서 가져오고 없으면 1로 초기화
-    let postId = parseInt(sessionStorage.getItem('postId')) || 1;  
-    
+    // 새로운 글의 ID는 maxPostId + 1
+    const newPostId = maxPostId + 1;
+
     // 새로운 글 데이터 생성
     const newPost = {
-        id: postId,
+        id: newPostId,
         writer: this.writer.getText(),
         title: this.title.getText(),
         content: this.content.getText(),
         date: formattedDate
     };
-
-    // 새로운 글 데이터를 배열에 추가
-    posts.push(newPost);
     
-    // 업데이트된 글 목록을 세션에 저장
-    sessionStorage.setItem('posts', JSON.stringify(posts));
+    // 새로운 글 데이터를 sessionStorage에 저장
+    sessionStorage.setItem(`post${newPostId}`, JSON.stringify(newPost));
 	
-	// postId를 증가시켜 저장 (다음 글에 사용될 ID)
-    sessionStorage.setItem('postId', postId + 1);
-    
     // 창 닫기
-	console.log("newPost = ",newPost);
-    this.getContainer().close({ result: 'create', data: newPost }); 
+    this.getContainer().close('create'); 
 	
 };
 

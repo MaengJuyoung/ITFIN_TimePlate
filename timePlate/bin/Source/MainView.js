@@ -24,31 +24,16 @@ MainView.prototype.init = function(context, evtListener)
 MainView.prototype.onInitDone = function()
 {
 	AView.prototype.onInitDone.call(this);
-
-	// 세션에서 기존 글 목록 가져오기
-    let posts = JSON.parse(sessionStorage.getItem('posts')) || [];  
-    posts.forEach(post => {
-        const rowData = [
-                post.id,
-                post.writer,
-                post.title,
-                post.content,
-                post.date
-            ];
-		this.grid.addRow(rowData);  // 그리드에 새로운 행을 추가
-    });
-
+	
+	this.loadSessionDataToGrid(); // 세션 데이터를 로드
+    
 };
 
 MainView.prototype.onActiveDone = function(isFirst)
 {
 	AView.prototype.onActiveDone.call(this, isFirst);
 
-	
     this.addGridHeadersToSelectBox();	// 1. Grid 제목 행에서 데이터를 가져와 selectBox에 추가
-	
-	
-
 };
 
 // 1. selectBox 셋팅 - grid 제목 행 데이터를 가져와 selectBox에 추가
@@ -92,72 +77,56 @@ MainView.prototype.onWriteBtnClick = function(comp, info, e)
 
 //onWindowResult 재정의  
 MainView.prototype.onWindowResult = function(result, data, awindow) {
-    if (result.result === 'create') {
-        // 글쓰기 작업 처리
-        this.loadPostsToGrid(result.data);  // 새로 작성된 글을 그리드에 추가
-    } else if (result.result === 'edit') {
-        // 수정 작업 처리
-        this.updatePostInGrid(result.data);  // 수정된 글을 그리드에서 업데이트
-    } else if (result.result === 'delete') {
-        // 삭제 작업 처리
-        this.removePostFromGrid(result.id);  // 삭제된 글을 그리드에서 제거
+	if (result === 'close') {
+        // 창이 닫힌 경우
+    } else if (result === 'create' || result === 'edit' || result === 'delete') {
+        // 작업 완료 후 그리드를 갱신
+        this.loadSessionDataToGrid(); // 세션 데이터를 다시 로드
     }
 };
 
-// 새로 작성된 글을 그리드에 추가
-MainView.prototype.loadPostsToGrid = function(post) {
-	console.log("작성한 글2 = ",post);
-    this.grid.addRow(post);
-};
+// sessionStorage 데이터를 읽어와 그리드에 추가하는 함수
+MainView.prototype.loadSessionDataToGrid = function() {
+	const keys = Object.keys(sessionStorage); // 모든 키 가져오기
+    const sessionData = [];
 
-// 수정된 글을 그리드에서 업데이트
-MainView.prototype.updatePostInGrid = function(updatedPost) {
-    const rows = this.grid.getRows();
-    rows.forEach((row, idx) => {
-        const rowData = this.grid.getRow(idx);
-        if (rowData[0] === updatedPost.id) {
-            this.grid.updateRow(idx, updatedPost);  // 해당 ID의 행을 수정된 데이터로 업데이트
+    // 세션 데이터를 배열에 저장
+    keys.forEach(key => {
+        const post = JSON.parse(sessionStorage.getItem(key)); // 데이터 파싱
+        if (post && post.id) { // 유효한 데이터만 추가
+            sessionData.push(post);
         }
+    });
+
+    // id를 기준으로 오름차순 정렬 (숫자 정렬)
+    sessionData.sort((a, b) => {
+        return parseInt(a.id, 10) - parseInt(b.id, 10); // 숫자 비교
+    });
+
+    // 그리드 초기화
+    while (this.grid.getRowCount() > 0) {
+        this.grid.removeRow(0); // 첫 번째 행을 계속 삭제
+    }
+
+    // 정렬된 데이터를 그리드에 추가
+    sessionData.forEach(post => {
+        const rowData = [
+            post.id,
+            post.writer,
+            post.title,
+            post.content,
+            post.date
+        ];
+        this.grid.addRow(rowData); // 그리드에 행 추가
     });
 };
 
-// 삭제된 글을 그리드에서 제거
-MainView.prototype.removePostFromGrid = function(postId) {
-	console.log("삭제할 글 번호 = ",postId);
-	// 세션에서 글 목록을 가져옵니다
-    let posts = JSON.parse(sessionStorage.getItem('posts')) || [];
-
-    // 글 목록에서 해당 글을 삭제합니다
-	console.log("삭제 할 posts =",posts[postId-1] );
-	console.log("posts =",posts);
-    posts = posts.filter(post => post.id !== postId);
-	console.log("삭제 후 posts =",posts );
-
-    // 세션에 삭제된 글 목록을 다시 저장합니다
-    sessionStorage.setItem('posts', JSON.stringify(posts));
-
-    // 해당 글을 그리드에서 제거합니다
-    this.grid.removeRow(postId - 1);  // 해당 ID의 행을 그리드에서 삭제
-};
-
-
-// 글 목록을 그리드에 추가하는 함수
-MainView.prototype.loadPostsToGrid = function(data) {
-	const rowData = [
-    	data.id,
-        data.writer,
-        data.title,
-        data.content,
-        data.date
-    ];
-
-    this.grid.addRow(rowData);  // 그리드에 새로운 행을 추가
-};
 
 // 그리드의 셀 선택 시 호출되는 이벤트 핸들러
 MainView.prototype.onGridSelect = function (comp, info, e) {
     const selectedCells = this.grid.getSelectedCells()[0]; // 선택된 셀 정보 가져오기
     const selectedRowIndex = selectedCells[0].closest('tr').rowIndex; // jQuery 객체에서 실제 DOM 요소의 인덱스를 추출
+	if (selectedRowIndex <= 0) return; // 선택된 로우가 제목행일 경우 종료
 
     if (selectedRowIndex < 0) return; // 선택된 로우가 없으면 종료
     const selectedRowData = this.grid.getRow(selectedRowIndex-1); // 선택된 로우의 데이터 가져오기
@@ -171,7 +140,6 @@ MainView.prototype.onGridSelect = function (comp, info, e) {
     // 새로운 창 열기
     const wnd = new AWindow('edit-window');
 
-	console.log("보낸 데이터 = ",cellData);
     wnd.openAsDialog('Source/editPage.lay', this.getContainer());
 	wnd.setData(cellData);
 
