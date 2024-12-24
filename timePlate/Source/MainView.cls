@@ -67,8 +67,11 @@ MainView.prototype.addDataToGrid = function(data) {
 
 // 그리드 데이터 필터링 함수
 MainView.prototype.filterGridData = function(selectBoxItemIdex, searchText) {
-	if (!searchText) return;
-    const keys = Object.keys(sessionStorage); // 모든 키 가져오기
+	if (!searchText) { // 검색어를 입력하지 않으면 모든 데이터 보여주기
+		this.loadSessionDataToGrid();
+		return;
+	}
+	const keys = Object.keys(sessionStorage); // 모든 키 가져오기
     const searchData = [];
 
     // 세션 데이터를 배열에 저장, selectBoxItemIdex에 해당하는 필드만 추가
