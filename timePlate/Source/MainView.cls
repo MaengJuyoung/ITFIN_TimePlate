@@ -112,9 +112,9 @@ MainView.prototype.loadSessionDataToGrid = function() {
     sessionData.forEach(post => {
         const rowData = [
             post.id,
-            post.writer,
             post.title,
             post.content,
+            post.writer,
             post.date
         ];
         this.grid.addRow(rowData); // 그리드에 행 추가
@@ -144,5 +144,83 @@ MainView.prototype.onGridSelect = function (comp, info, e) {
 	wnd.setData(cellData);
 
     wnd.setResultListener(this); // 결과 처리 리스너 설정
+};
+
+// 초기화 버튼
+function MainView*onResetBtnClick(comp, info, e)
+{
+	this.searchField.reset();
+	this.selectBox.selectItem(0);
+	this.loadSessionDataToGrid(); // 세션 데이터를 로드
+};
+
+// 검색 버튼
+function MainView*onSearchBtnClick(comp, info, e)
+{
+	const selectBoxItemIdex = this.selectBox.getSelectedIndex();	
+	const searchText = this.searchField.getText();
+	
+	// 필터링된 데이터를 그리드에 로드하는 함수 호출
+    this.filterGridData(selectBoxItemIdex, searchText);
+};
+
+// 그리드 데이터를 필터링하여 그리드에 로드하는 함수
+MainView.prototype.filterGridData = function(selectBoxItemIdex, searchText) {
+    const keys = Object.keys(sessionStorage); // 모든 키 가져오기
+    const selectBoxData = [];
+
+    // 세션 데이터를 배열에 저장, selectBoxItemIdex에 해당하는 필드만 추가
+    keys.forEach(key => {
+        const post = JSON.parse(sessionStorage.getItem(key)); // 데이터 파싱
+        if (post && post.id) { // 유효한 데이터만 추가
+
+            // 선택된 인덱스에 해당하는 필드 값만 가져와 필터링
+            let fieldValue;
+            switch (selectBoxItemIdex) {
+                case 0:
+                    fieldValue = post.id;
+                    break;
+                case 1:
+                    fieldValue = post.title;
+                    break;
+                case 2:
+                    fieldValue = post.content;
+                    break;
+                case 3:
+                    fieldValue = post.writer;
+                    break;
+                case 4:
+                    fieldValue = post.date;
+                    break;
+                default:
+                    fieldValue = null;
+                    break;
+            }
+
+            // fieldValue가 문자열인 경우에만 toLowerCase 사용
+            if (fieldValue && typeof fieldValue === 'string' && fieldValue.toLowerCase().includes(searchText.toLowerCase())) {
+                selectBoxData.push(post);  // 필터링된 데이터 저장
+            } else if (fieldValue && typeof fieldValue !== 'string' && String(fieldValue).toLowerCase().includes(searchText.toLowerCase())) {
+                selectBoxData.push(post);  // 필터링된 데이터 저장 (문자열이 아닐 경우 강제로 문자열로 변환하여 처리)
+            }
+        }
+    });
+	
+	// 그리드 초기화
+    while (this.grid.getRowCount() > 0) {
+        this.grid.removeRow(0); // 첫 번째 행을 계속 삭제
+    }
+
+    // 필터링된 데이터를 그리드에 추가
+    selectBoxData.forEach(post => {
+        const rowData = [
+            post.id,
+            post.title,
+            post.content,
+            post.writer,
+            post.date
+        ];
+        this.grid.addRow(rowData); // 그리드에 행 추가
+    });
 };
 

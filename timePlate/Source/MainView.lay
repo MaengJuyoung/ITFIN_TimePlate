@@ -8,10 +8,10 @@
             </div>
             <div data-base="AView" data-class="AView" class="AView-Style" style="width: 100%; position: relative; border-top: 2px solid rgb(50, 110, 255); height: 90px; background-color: rgba(0, 0, 0, 0);" id="MainView--search">
                 <div data-base="AView" data-class="AView" class="AView-Style" style="width: 1280px; position: relative; padding: 20px 10px; height: 90px; background-color: rgba(0, 0, 0, 0); margin: 0px auto;">
-                    <select data-base="ASelectBox" data-class="ASelectBox" class="ASelectBox-Style" style="width: 150px; height: 50px; position: relative; font-size: 20px; float: left; border-radius: 5px;" id="MainView--selectBox"></select>
+                    <select data-base="ASelectBox" data-class="ASelectBox" class="ASelectBox-Style" style="width: 150px; height: 50px; position: relative; font-size: 20px; float: left; border-radius: 5px; margin-left: 0px;" id="MainView--selectBox"></select>
                     <input data-base="ATextField" data-class="ATextField" type="text" value="" class="ATextField-Style" autocomplete="off" style="width: 300px; height: 50px; position: relative; margin-left: 10px; top: 0px; font-size: 20px; background-color: rgb(255, 255, 255); float: left; border-radius: 5px;" placeholder="검색어를 입력하세요" id="MainView--searchField">
-                    <button data-base="AButton" data-class="AButton" class="AButton-Style" style="width: 150px; height: 50px; position: relative; left: 0px; top: 0px; margin-left: 10px; font-size: 20px; float: left; border-radius: 5px; background-color: rgb(50, 110, 255); color: rgb(255, 255, 255);">검색</button>
-                    <button data-base="AButton" data-class="AButton" class="AButton-Style" style="width: 150px; height: 50px; position: relative; margin-left: 10px; font-size: 20px; float: right; background-color: rgb(50, 110, 255); border-radius: 5px; color: rgb(255, 255, 255);">초기화</button>
+                    <button data-base="AButton" data-class="AButton" class="AButton-Style" style="width: 150px; height: 50px; position: relative; left: 0px; top: 0px; margin-left: 10px; font-size: 20px; float: left; border-radius: 5px; background-color: rgb(50, 110, 255); color: rgb(255, 255, 255);" id="MainView--searchBtn" data-listener-click="MainView:onSearchBtnClick">검색</button>
+                    <button data-base="AButton" data-class="AButton" class="AButton-Style" style="width: 150px; height: 50px; position: relative; margin-left: 10px; font-size: 20px; float: right; background-color: rgb(50, 110, 255); border-radius: 5px; color: rgb(255, 255, 255);" id="MainView--resetBtn" data-listener-click="MainView:onResetBtnClick">초기화</button>
                 </div>
             </div>
         </div>
