@@ -86,22 +86,25 @@ MainView.prototype.filterGridData = function(selectedIndex, searchText) {
 };
 
 // 글 수정,삭제 - 그리드 셀 선택 이벤트 핸들러
-MainView.prototype.onGridSelect = function (comp, info, e) {
-    const selectedCells = this.grid.getSelectedCells()[0]; 			// 선택된 셀 정보 가져오기
-	if (selectedCells[0].tagName.toLowerCase() === 'td') return;	// 제목 행(Head row) 선택 시 return
+MainView.prototype.onGridSelect = function(comp, info, e) {
+	const selectedRowIndex = this.grid.getRowIndexByInfo(info);
+	if (selectedRowIndex == -1) return;
 	
 	const cellData = [];  
- 	const rowIndex = this.grid.colIndexOfCell(selectedCells[0]);  	// 선택된 셀의 행(row) 인덱스 가져오기
-	const colCount = this.grid.getColumnCount();  					// 그리드의 열 개수
+	const colCount = this.grid.getColumnCount();  						// 그리드의 열 개수
 	for (let colIndex = 0; colIndex < colCount; colIndex++) {  
-		const text = this.grid.getCellText(rowIndex, colIndex);  	// 행 인덱스와 열 인덱스로 셀 텍스트 가져오기
-		cellData.push(text.trim());  								// 배열에 공백 제거 후 추가
+		const text = this.grid.getCellText(selectedRowIndex, colIndex);	// 행 인덱스와 열 인덱스로 셀 텍스트 가져오기
+		cellData.push(text.trim());  									// 배열에 공백 제거 후 추가
 	}
 	
-    const wnd = new AWindow('edit-window');							// 새로운 창 열기
-    wnd.openAsDialog('Source/editPage.lay', this.getContainer());
-	wnd.setData(cellData);
-    wnd.setResultListener(this);									// 결과 처리 리스너 설정
+    const wnd = new AWindow('edit-window');								// 새로운 창 열기
+    wnd.openAsDialog('Source/writePage.lay', this.getContainer());
+	wnd.setData({ mode: 'edit', data: cellData });
+    wnd.setResultCallback((result, data) => {
+		if (result){
+			this.loadSessionData();
+		}
+	});
 };
 
 
@@ -110,12 +113,12 @@ MainView.prototype.onGridSelect = function (comp, info, e) {
 MainView.prototype.onWriteBtnClick = function(comp, info, e) {
     const wnd = new AWindow('open-window'); 						// 윈도우 생성 
     wnd.openAsDialog('Source/writePage.lay', this.getContainer());  // 윈도우 오픈
-    wnd.setResultListener(this); 									// 윈도우를 닫을때 this의 onWindowResult  함수를 호출
-};
-
-//onWindowResult 재정의  
-MainView.prototype.onWindowResult = function(result, data, awindow) {
-	if (result === 'create' || result === 'edit' || result === 'delete') this.loadSessionData(); // 세션 데이터 로드
+	wnd.setData({ mode: 'write' });
+   	wnd.setResultCallback((result, data) => {
+		if (result){
+			this.loadSessionData();
+		}
+	});
 };
 
 // 초기화 버튼
@@ -128,7 +131,7 @@ MainView.prototype.onResetBtnClick = function(comp, info, e) {
 // 검색 버튼
 MainView.prototype.onSearchBtnClick = function(comp, info, e) {
 	const selectedIndex = this.selectBox.getSelectedIndex();	// selectBox 값
-	const searchText = this.searchField.getText();					// 입력된 text
+	const searchText = this.searchField.getText();				// 입력된 text
     this.filterGridData(selectedIndex, searchText);				// 필터링된 데이터를 그리드에 로드하는 함수 호출
 
 };

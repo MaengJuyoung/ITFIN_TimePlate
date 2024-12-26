@@ -58,7 +58,9 @@ function editPage*onCloseBtnClick(comp, info, e)
 // 수정 버튼
 function editPage*onUpdateBtnClick(comp, info, e)
 {
-    
+    console.log("comp",comp);
+    console.log("info",info);
+
     // 현재 날짜와 시간 얻기 (작성 및 수정 시간)
     const currentDate = new Date();
     const formattedDate = '! ' + currentDate.getFullYear() + '-' +
