@@ -64,19 +64,13 @@ writePage.prototype.onSubmitBtnClick = function(comp, info, e)
                           String(currentDate.getHours()).padStart(2, '0') + ':' +
                           String(currentDate.getMinutes()).padStart(2, '0');
     
-    // 세션 스토리지에서 현재 존재하는 post 키 목록 확인
-    let maxPostId = 0;
-    for (let key in sessionStorage) {
-        if (key.startsWith('post')) {
-            const postId = parseInt(key.replace('post', ''), 10);
-            if (!isNaN(postId) && postId > maxPostId) {
-                maxPostId = postId; // 가장 큰 번호 찾기
-            }
-        }
-    }
-    
-    // 새로운 글의 ID는 maxPostId + 1
-    const newPostId = maxPostId + 1;
+	let lastPostId = sessionStorage.getItem('No.');
+	if (!lastPostId) {
+		sessionStorage.setItem('No.', 0);
+	}
+	const newPostId = parseInt(sessionStorage.getItem('No.')) + 1;
+	sessionStorage.setItem('No.', newPostId);
+	
 
     // 새로운 글 데이터 생성
     const newPost = {
