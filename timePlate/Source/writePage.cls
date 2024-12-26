@@ -66,13 +66,32 @@ function writePage*savePost(postId, newPost) {
 function writePage*handlePostAction(status) {
     const formattedDate = this.getFormattedDate();
     const writerText = (this.mode == 'edit') ? this.writerLabel.getText() : this.writer.getText();
+	const title = this.title.getText();
+	const content = this.content.getText();
 
-    // 작성자 입력 여부 확인
-    if (writerText === "") {
-        this.alert.setText("작성자 입력은 필수입니다 !!!");
+    // 빈 값 확인
+    if (!writerText) {
+        this.writerAlert.setText("작성자 입력은 필수입니다 !!!");
         this.writer.setFocus();
-        return;
-    }
+		return;
+    }else {
+		this.writerAlert.setText("");
+	}
+	if (!title){
+		this.titleAlert.setText("제목을 입력하세요 !!");
+		this.title.setFocus();
+		return
+	}else {
+		this.titleAlert.setText("");
+	}
+	if (!content){
+		this.contentAlert.setText("내용을 입력하세요 !!");
+		this.content.setFocus();
+		return
+	}else {
+		this.contentAlert.setText("");
+	}
+	
 
     let postId = 0;
     if (status === '확인') {
