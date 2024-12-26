@@ -74,9 +74,9 @@ function editPage*onUpdateBtnClick(comp, info, e)
     // 새로운 글 데이터 생성 (제목과 내용만 수정)
     const newPost = {
         id: postId,  // 기존 ID 그대로 사용
-        writer: this.writer.getText(),
         title: this.title.getText(),
         content: this.content.getText(),
+        writer: this.writer.getText(),
         date: formattedDate
     };
 

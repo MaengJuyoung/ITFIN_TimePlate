@@ -75,9 +75,9 @@ writePage.prototype.onSubmitBtnClick = function(comp, info, e)
     // 새로운 글 데이터 생성
     const newPost = {
         id: newPostId,
-        writer: this.writer.getText(),
         title: this.title.getText(),
         content: this.content.getText(),
+        writer: this.writer.getText(),
         date: formattedDate
     };
     
