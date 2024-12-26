@@ -65,7 +65,7 @@ writePage.prototype.savePost = function(postId, newPost) {
 // 공통 글쓰기 및 수정 처리 함수
 writePage.prototype.handlePostAction = function(status) {
     const formattedDate = this.getFormattedDate();
-    const writerText = this.mode == 'edit' ? this.writerLabel.getText() : this.writer.getText();
+    const writerText = (this.mode == 'edit') ? this.writerLabel.getText() : this.writer.getText();
 
     // 작성자 입력 여부 확인
     if (writerText === "") {
