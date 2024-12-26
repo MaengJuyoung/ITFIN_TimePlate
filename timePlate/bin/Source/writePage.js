@@ -62,35 +62,35 @@ writePage.prototype.savePost = function(postId, newPost) {
     sessionStorage.setItem(`post${postId}`, JSON.stringify(newPost));
 }
 
+// 유효성 검사 함수
+writePage.prototype.validateField = function(fieldValue, alertComponent, alertMessage, focusFunction, allAlerts) {
+    // 모든 라벨 초기화
+    allAlerts.forEach(alert => alert.setText(""));
+
+    // 개별 필드 유효성 검사
+    if (!fieldValue) {
+        alertComponent.setText(alertMessage); // 경고 메시지 설정
+        focusFunction();                      // 포커스 이동
+        return false;
+    }
+    return true;
+}
+
+
 // 공통 글쓰기 및 수정 처리 함수
 writePage.prototype.handlePostAction = function(status) {
     const formattedDate = this.getFormattedDate();
     const writerText = (this.mode == 'edit') ? this.writerLabel.getText() : this.writer.getText();
 	const title = this.title.getText();
 	const content = this.content.getText();
+	
+	 // 모든 경고 라벨을 배열로 전달
+    const allAlerts = [this.writerAlert, this.titleAlert, this.contentAlert];
 
-    // 빈 값 확인
-    if (!writerText) {
-        this.writerAlert.setText("작성자 입력은 필수입니다 !!!");
-        this.writer.setFocus();
-		return;
-    }else {
-		this.writerAlert.setText("");
-	}
-	if (!title){
-		this.titleAlert.setText("제목을 입력하세요 !!");
-		this.title.setFocus();
-		return
-	}else {
-		this.titleAlert.setText("");
-	}
-	if (!content){
-		this.contentAlert.setText("내용을 입력하세요 !!");
-		this.content.setFocus();
-		return
-	}else {
-		this.contentAlert.setText("");
-	}
+    // 유효성 검사
+    if (!this.validateField(writerText, this.writerAlert, "작성자 입력은 필수입니다 !!!", () => this.writer.setFocus(), allAlerts)) return;
+    if (!this.validateField(title, this.titleAlert, "제목을 입력하세요 !!", () => this.title.setFocus(), allAlerts)) return;
+    if (!this.validateField(content, this.contentAlert, "내용을 입력하세요 !!", () => this.content.setFocus(), allAlerts)) return;
 	
 
     let postId = 0;
