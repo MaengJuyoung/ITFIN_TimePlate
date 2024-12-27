@@ -104,16 +104,12 @@ MainView.prototype.openDialog = function(mode, data = null) {
     const wnd = new AWindow(`${mode}-window`);
     wnd.openAsDialog('Source/writePage.lay', this.getContainer());
     wnd.setData({ mode, data });
-    wnd.setResultCallback(this.handleDialogResult.bind(this));
+    wnd.setResultCallback(result => {
+		if (result) {
+			this.loadSessionData();
+		}
+	});
 }
-
-// 공통 콜백 처리 함수 - result 값이 1이면(등록, 수정, 삭제) 세션데이터 로드
-MainView.prototype.handleDialogResult = function(result) {
-    if (result) {
-        this.loadSessionData();
-    }
-}
-
 
 /* -------------------------------------------- 버튼 클릭 이벤트 핸들러들 -------------------------------------------- */
 // 글쓰기 버튼 클릭 - 글쓰기 창 OPEN
