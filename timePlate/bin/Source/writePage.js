@@ -39,9 +39,6 @@ writePage.prototype.onInitDone = function()
 writePage.prototype.onActiveDone = function(isFirst)
 {
 	AView.prototype.onActiveDone.call(this, isFirst);
-
-	//TODO:edit here
-
 };
 
 // 날짜 형식 생성 함수
@@ -60,7 +57,7 @@ writePage.prototype.onsubmitOrUpdateBtnClick = function(comp, info, e)
 	const formattedDate = this.getFormattedDate();
     const writerText = (this.mode == 'edit') ? this.writerLabel.getText() : this.writer.getText();
 	
-	 // 배열로 전달
+	 // 유효성 검사를 위한 배열 및 유효성 검사
 	const allComponent = [this.writer, this.title, this.content];
 	const allAlerts = [this.writerAlert, this.titleAlert, this.contentAlert];
 	const allComponentText = [writerText, this.title.getText(), this.content.getText()];
