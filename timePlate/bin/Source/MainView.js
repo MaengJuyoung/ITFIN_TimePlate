@@ -47,7 +47,7 @@ MainView.prototype.addGridHeadersToSelectBox = function() {
     });
 };
 
-// sessionStorage 데이터를 읽어오는 함수
+// sessionStorage 데이터 로드 및 캐싱하는 함수
 MainView.prototype.loadSessionData = function() {
 	const keys = Object.keys(sessionStorage); 					// 모든 키 가져오기
     const sessionData = [];
@@ -96,29 +96,30 @@ MainView.prototype.onGridSelect = function(comp, info, e) {
 		const text = this.grid.getCellText(selectedRowIndex, colIndex);	// 행 인덱스와 열 인덱스로 셀 텍스트 가져오기
 		cellData.push(text.trim());  									// 배열에 공백 제거 후 추가
 	}
-	
-    const wnd = new AWindow('edit-window');								// 새로운 창 열기
-    wnd.openAsDialog('Source/writePage.lay', this.getContainer());
-	wnd.setData({ mode: 'edit', data: cellData });
-    wnd.setResultCallback((result, data) => {
-		if (result){
-			this.loadSessionData();
-		}
-	});
+	this.openDialog('edit', cellData);
 };
+
+// 새로운 창 열기
+MainView.prototype.openDialog = function(mode, data = null) {
+    const wnd = new AWindow(`${mode}-window`);
+    wnd.openAsDialog('Source/writePage.lay', this.getContainer());
+    wnd.setData({ mode, data });
+    wnd.setResultCallback(this.handleDialogResult.bind(this));
+}
+
+// 공통 콜백 처리 함수 - result 값이 1이면(등록, 수정, 삭제) 세션데이터 로드
+MainView.prototype.handleDialogResult = function(result) {
+    if (result) {
+        this.loadSessionData();
+    }
+}
 
 
 /* -------------------------------------------- 버튼 클릭 이벤트 핸들러들 -------------------------------------------- */
 // 글쓰기 버튼 클릭 - 글쓰기 창 OPEN
 MainView.prototype.onWriteBtnClick = function(comp, info, e) {
-    const wnd = new AWindow('open-window'); 						// 윈도우 생성 
-    wnd.openAsDialog('Source/writePage.lay', this.getContainer());  // 윈도우 오픈
-	wnd.setData({ mode: 'write' });
-   	wnd.setResultCallback((result, data) => {
-		if (result){
-			this.loadSessionData();
-		}
-	});
+    this.openDialog('write');
+
 };
 
 // 초기화 버튼
